@@ -1,7 +1,8 @@
 #
-# CloudBoost Dockerfile
+# CloudBoost Storage Analytics Dockerfile
 #
 # Pull base image nodejs image.
+
 FROM node:5.3
 
 #Maintainer.
