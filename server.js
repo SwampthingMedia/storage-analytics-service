@@ -9,6 +9,10 @@ try{
 }
 
 global.keys = require('./database-connect/key.js')();
+if(global.config){
+  global.keys.analyticsUrl="http://localhost:5555";//Local  
+}
+
 global.keyService = require('./database-connect/keyService.js');
 global.q = require('q');
 global.uuid=require('node-uuid');
@@ -180,5 +184,5 @@ function setUpMongoDB(){
 
 
 function attachCronJobs() {
-    require('./cron/storage-analytics.js');
+    require('./cron/storage-analytics.js')();
 }
