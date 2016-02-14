@@ -64,7 +64,7 @@ app.set('port', 4000); //SET THE DEFAULT PORT.
 //Server kickstart:
 http.listen(app.get('port'), function () {
     try {
-        console.log("Server Init...");
+        console.log("Storage Analytics Server running on port:"+app.get('port'));
         console.log("Data Connections Init...");
         addConnections();
         services();
