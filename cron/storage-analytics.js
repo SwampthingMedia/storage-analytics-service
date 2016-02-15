@@ -39,7 +39,7 @@ module.exports =function(){
 };        
 
 
-/***********************Pinging Analytics Services*********************************/
+/*************************Pinging Analytics Services*********************************/
 
 function _sendStorageDetailsToAnalytics(secureKey,dbArray){
   var deferred = Q.defer(); 
