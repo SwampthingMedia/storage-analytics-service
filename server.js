@@ -185,7 +185,7 @@ function setUpAnalyticsServer(){
   if(process.env["CLOUDBOOST_ANALYTICS_SERVICE_HOST"]){
     console.log("Analytics is running on Kubernetes");      
 
-    global.keys.analyticsUrl=process.env["CLOUDBOOST_ANALYTICS_SERVICE_HOST"]+":"+process.env["CLOUDBOOST_ANALYTICS_SERVICE_PORT"]; 
+    global.keys.analyticsUrl="http://"+process.env["CLOUDBOOST_ANALYTICS_SERVICE_HOST"]+":"+process.env["CLOUDBOOST_ANALYTICS_SERVICE_PORT"]; 
     console.log("Analytics URL:"+global.keys.analyticsUrl);
         
   }else{
