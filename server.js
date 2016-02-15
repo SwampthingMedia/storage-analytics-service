@@ -9,10 +9,6 @@ try{
 }
 
 global.keys = require('./database-connect/key.js')();
-if(global.config){
-  global.keys.analyticsUrl="http://localhost:5555";//Local  
-}
-
 global.keyService = require('./database-connect/keyService.js');
 global.q = require('q');
 global.uuid=require('node-uuid');
@@ -96,9 +92,12 @@ function services(){
 
 //this fucntion add connections to the DB.
 function addConnections(){ 
-   //MONGO DB
-   setUpMongoDB();
-   setUpAnalyticsServer();   
+    //MONGO DB
+    setUpMongoDB();
+    setUpAnalyticsServer();
+    if(global.config){
+      global.keys.analyticsUrl="http://localhost:5555";//Local  
+    }   
 }
 
 
