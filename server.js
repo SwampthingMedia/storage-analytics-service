@@ -98,7 +98,7 @@ function services(){
 function addConnections(){ 
    //MONGO DB
    setUpMongoDB();
-   
+   setUpAnalyticsServer();   
 }
 
 
@@ -182,6 +182,18 @@ function setUpMongoDB(){
    console.log("Mongo DB Server: "+global.keys.mongoConnectionString);
 }
 
+function setUpAnalyticsServer(){
+  if(process.env["CLOUDBOOST_ANALYTICS_SERVICE_HOST"]){
+    console.log("Analytics is running on Kubernetes");      
+
+    global.keys.analyticsUrl=process.env["CLOUDBOOST_ANALYTICS_SERVICE_HOST"]+":"+process.env["CLOUDBOOST_ANALYTICS_SERVICE_PORT"]; 
+    console.log("Analytics URL:"+global.keys.analyticsUrl);
+        
+  }else{
+    global.keys.analyticsUrl="https://analytics.cloudboost.io";
+    console.log("Analytics URL:"+global.keys.analyticsUrl);
+  }
+}
 
 function attachCronJobs() {
     require('./cron/storage-analytics.js')();
