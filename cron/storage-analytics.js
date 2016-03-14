@@ -6,7 +6,7 @@ var _ = require('underscore');
 module.exports =function(){
 
   function _runUserAnalyticsCronJob(){      
-
+    
     try {
       
       var UserStorageAnalyticsJob = new CronJob('58 58 23 * * *', function() {
