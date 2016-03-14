@@ -17,6 +17,7 @@
     "mongodb": "^2.0.20",
     "node-uuid": "*",
     "q": "^2.0.3",
-    "request": "^2.55.0"
+    "request": "^2.55.0",
+    "underscore": "^1.8.3"
   }
 }

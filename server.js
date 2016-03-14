@@ -94,11 +94,10 @@ function services(){
 function addConnections(){ 
     //MONGO DB
     setUpMongoDB();
-    setUpAnalyticsServer();
-    if(global.config){
-      global.keys.analyticsUrl="http://localhost:5555";//Local  
-    }   
+    //ANALYTICS
+    setUpAnalyticsServer();     
 }
+
 
 
 function setUpMongoDB(){
@@ -182,16 +181,15 @@ function setUpMongoDB(){
 }
 
 function setUpAnalyticsServer(){
-  if(process.env["CLOUDBOOST_ANALYTICS_SERVICE_HOST"]){
-    console.log("Analytics is running on Kubernetes");      
-
-    global.keys.analyticsUrl="http://"+process.env["CLOUDBOOST_ANALYTICS_SERVICE_HOST"]+":"+process.env["CLOUDBOOST_ANALYTICS_SERVICE_PORT"]; 
-    console.log("Analytics URL:"+global.keys.analyticsUrl);
-        
-  }else{
-    global.keys.analyticsUrl="https://analytics.cloudboost.io";
-    console.log("Analytics URL:"+global.keys.analyticsUrl);
-  }
+    if(process.env["CLOUDBOOST_ANALYTICS_SERVICE_HOST"]){
+      //this is running on Kubernetes
+      console.log("CloudBoost Analytics is running on Kubernetes");
+      global.keys.analyticsUrl = "http://"+process.env["CLOUDBOOST_ANALYTICS_SERVICE_HOST"];
+      console.log(global.keys.analyticsUrl);
+    }else{
+      console.log("Analytics URL : ");
+      console.log(global.keys.analyticsUrl);
+    }    
 }
 
 function attachCronJobs() {

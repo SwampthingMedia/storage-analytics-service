@@ -1,6 +1,7 @@
 var CronJob = require('cron').CronJob;
 var request = require('request');
 var Q = require('q');
+var _ = require('underscore');
 
 module.exports =function(){
 
@@ -16,8 +17,13 @@ module.exports =function(){
           
           global.mongoClient.command({listDatabases: 1},function(err, databaseStatList){
               if(err) {            
-                  console.log(err);            
-              }else if(databaseStatList){                
+                console.log(err);            
+              }else if(databaseStatList){  
+                //For Development
+                //var reqDB=_.first(_.where(databaseStatList.databases, {name: "otamnrahmfux"}));               
+                //console.log(reqDB); 
+
+                //Pinging to analytics                       
                 _sendStorageDetailsToAnalytics(global.keys.secureKey,databaseStatList.databases);                                        
               }
           });
@@ -49,7 +55,7 @@ function _sendStorageDetailsToAnalytics(secureKey,dbArray){
   dataObj.dbArray = dbArray;
   dataObj = JSON.stringify(dataObj);
 
-  var url = global.keys.analyticsUrl + '/save/storage';  
+  var url = global.keys.analyticsUrl + 'save/storage';  
   
   request.post(url,{
       headers: {
