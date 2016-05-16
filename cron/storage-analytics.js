@@ -21,7 +21,7 @@ module.exports =function(){
               }else if(databaseStatList){  
                 //For Development
                 //var reqDB=_.first(_.where(databaseStatList.databases, {name: "otamnrahmfux"}));               
-                //console.log(reqDB); 
+                //console.log(databaseStatList); 
 
                 //Pinging to analytics                       
                 _sendStorageDetailsToAnalytics(global.keys.secureKey,databaseStatList.databases);                                        
