@@ -114,14 +114,14 @@ function setUpMongoDB(){
    if(global.config && global.config.mongo && global.config.mongo.length>0){
        //take from config file
        
-       if(global.config.mongo.length>1){
-           isReplicaSet = true;
-       }
-       
-       for(var i=0;i<global.config.mongo.length;i++){
-            mongoConnectionString+=global.config.mongo[i].host +":"+global.config.mongo[i].port;
-            mongoConnectionString+=",";
-       }
+     if(global.config.mongo.length>1){
+         isReplicaSet = true;
+     }
+     
+     for(var i=0;i<global.config.mongo.length;i++){
+        mongoConnectionString+=global.config.mongo[i].host +":"+global.config.mongo[i].port;
+        mongoConnectionString+=",";
+     }
 
    }else{
         
@@ -133,17 +133,27 @@ function setUpMongoDB(){
         
        if(process.env["MONGO_SERVICE_HOST"]){
             console.log("MongoDB is running on Kubernetes");
-           
-            global.config.mongo.push({
-                host :  process.env["MONGO_SERVICE_HOST"],
-                port : process.env["MONGO_SERVICE_PORT"]
-            });
+             
+              global.config.mongo.push({
+                  host :  process.env["MONGO_SERVICE_HOST"],
+                  port : process.env["MONGO_SERVICE_PORT"]
+              });
 
-            mongoConnectionString+=process.env["MONGO_SERVICE_HOST"]+":"+process.env["MONGO_SERVICE_PORT"]; 
-            mongoConnectionString+=",";
-            
-            isReplicaSet = true;
-            
+              mongoConnectionString+=process.env["MONGO_SERVICE_HOST"]+":"+process.env["MONGO_SERVICE_PORT"]; 
+              mongoConnectionString+=",";
+
+              var i=2;
+              while(process.env["MONGO"+i+"_SERVICE_HOST"]){
+                global.config.mongo.push({
+                    host :  process.env["MONGO"+i+"_SERVICE_HOST"],
+                    port : process.env["MONGO"+i+"_SERVICE_PORT"]
+                });
+                mongoConnectionString+=process.env["MONGO"+i+"_SERVICE_HOST"]+":"+process.env["MONGO"+i+"_SERVICE_PORT"]; 
+                mongoConnectionString+=",";
+                ++i;
+              }              
+              
+              isReplicaSet = true;
        }else{
             var i=1;
             
@@ -171,7 +181,7 @@ function setUpMongoDB(){
 
    if(isReplicaSet){
        console.log("MongoDB is in ReplicaSet");
-       var str = "?replicaSet=cloudboost&slaveOk=true";
+       var str = "?replicaSet=cloudboost&slaveOk=true&maxPoolSize=200&ssl=false&connectTimeoutMS=30000&socketTimeoutMS=30000&w=1&wtimeoutMS=30000";
        global.keys.prodSchemaConnectionString+=str;
        global.keys.mongoConnectionString+=str;
    }
@@ -181,17 +191,17 @@ function setUpMongoDB(){
 }
 
 function setUpAnalyticsServer(){
-    if(process.env["CLOUDBOOST_ANALYTICS_SERVICE_HOST"]){
-      //this is running on Kubernetes
-      console.log("CloudBoost Analytics is running on Kubernetes");
-      global.keys.analyticsUrl = "http://"+process.env["CLOUDBOOST_ANALYTICS_SERVICE_HOST"];
-      console.log(global.keys.analyticsUrl);
-    }else{
-      console.log("Analytics URL : ");
-      console.log(global.keys.analyticsUrl);
-    }    
+  if(process.env["CLOUDBOOST_ANALYTICS_SERVICE_HOST"]){
+    //this is running on Kubernetes
+    console.log("CloudBoost Analytics is running on Kubernetes");
+    global.keys.analyticsUrl = "http://"+process.env["CLOUDBOOST_ANALYTICS_SERVICE_HOST"];
+    console.log(global.keys.analyticsUrl);
+  }else{
+    console.log("Analytics URL : ");
+    console.log(global.keys.analyticsUrl);
+  } 
 }
 
 function attachCronJobs() {
-    require('./cron/storage-analytics.js')();
+  require('./cron/storage-analytics.js')();
 }

@@ -23,7 +23,8 @@ module.exports =function(){
                 //var reqDB=_.first(_.where(databaseStatList.databases, {name: "otamnrahmfux"}));               
                 //console.log(databaseStatList); 
 
-                //Pinging to analytics                       
+                //Pinging to analytics  
+                console.log("List of databases and their sizes");                     
                 _sendStorageDetailsToAnalytics(global.keys.secureKey,databaseStatList.databases);                                        
               }
           });
